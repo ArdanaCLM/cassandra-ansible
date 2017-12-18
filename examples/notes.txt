@@ -1,0 +1,36 @@
+#
+#
+# set properties
+#
+#
+# set cassandra server listening ip address
+sudo sed -i "s/^rpc_address: localhost/rpc_address: ${SERVICE_HOST}/g" /etc/cassandra/cassandra.yaml
+sudo sed -i "s/^batch_size_warn_threshold_in_kb: 5/batch_size_warn_threshold_in_kb: 50/g" /etc/cassandra/cassandra.yaml
+sudo sed -i "s/^batch_size_fail_threshold_in_kb: 50/batch_size_fail_threshold_in_kb: 500/g" /etc/cassandra/cassandra.yaml
+
+#
+#
+# set monasca-persister properties
+#
+#
+dbMetricDriver="monasca_api.common.repositories.cassandra.metrics_repository:MetricsRepository"
+iniset "$MONASCA_API_CONF" repositories metrics_driver $dbMetricDriver
+iniset "$MONASCA_API_CONF" cassandra contact_points $SERVICE_HOST
+
+#
+#
+# monasca_schema.cql
+#
+#
+sudo cp -f "${MONASCA_API_DIR}"/devstack/files/cassandra/*.cql $MONASCA_SCHEMA_DIR
+/usr/bin/cqlsh ${SERVICE_HOST} -f $MONASCA_SCHEMA_DIR/monasca_schema.cql
+
+# clean cassandra
+apt_get -y purge cassandra
+apt_get -y autoremove
+sudo rm -rf /var/lib/cassandra
+sudo rm -rf /var/log/cassandra
+sudo rm -rf /etc/cassandra
+sudo rm -f /etc/apt/sources.list.d/cassandra.list
+sudo rm -f /etc/apt/trusted.gpg.d/cassandra.gpg
+

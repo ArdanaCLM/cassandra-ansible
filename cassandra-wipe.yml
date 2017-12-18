@@ -1,0 +1,16 @@
+- hosts: all
+  gather_facts: False
+  tasks:
+    - name: stop cassandra
+      service: name=cassandra state=stopped
+      become: true
+    - name: cleanup database files
+      become: true
+      shell: /usr/bin/rm -rf /mnt/cassandra/data/*
+    - name: cleanup log files
+      become: true
+      shell: /usr/bin/rm -rf /mnt/cassandra/log/*
+    - name: cleanup cassandra log
+      become: true
+      shell: /usr/bin/rm -rf /var/log/cassandra/*
+

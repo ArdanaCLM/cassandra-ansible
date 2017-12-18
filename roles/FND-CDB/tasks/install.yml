@@ -1,0 +1,87 @@
+#
+# (c) Copyright 2017 SUSE LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License"); you may
+# not use this file except in compliance with the License. You may obtain
+# a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations
+# under the License.
+#
+---
+
+#
+# TODO(ashwin):
+# 1.) fix download.opensuse.org link below once cassandra 3.11.0 package gets accepted
+# 2.) move add repo code to hp/hlm-dev-toools/ansible/roles/vagrant-vm/defaults/main.yml
+#
+# - repo: cloud-openstack-newton-cassandra
+#   disable_gpg_check: yes
+#   pkgs:
+#     - cassandra
+#   url: "https://download.opensuse.org/repositories/home:/sgrasley:/branches:/server:/database/SLE_12_SP3/"
+
+- name: FND-CDB | install | Add cassandra repo
+  zypper_repository:
+    name: server-database-cassandra
+    repo: 'https://download.opensuse.org/repositories/server:/database/SLE_12_SP3/'
+    disable_gpg_check: yes
+    state: present
+  become: yes
+
+- name: FND-CDB | install | Setup group
+  become_user: root
+  become: True
+  group:
+    name: "{{ cassandra_group }}"
+    system: yes
+
+- name: FND-CDB | install | Setup user
+  become: yes
+  user:
+    name: "{{ cassandra_user }}"
+    system: yes
+    group: "{{ cassandra_group }}"
+
+- name: FND-CDB | install | Update installed packager cache
+  become: yes
+  install_package:
+    cache: update
+
+- name: FND-CDB | install | install cassandra
+  become: yes
+  package:
+    name: cassandra
+    state: present
+
+- name: FND-CDB | install | create cassandra log and local directories
+  become: yes
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ cassandra_user }}"
+    group: "{{ cassandra_group }}"
+    mode: 0775
+  with_items:
+    - "{{ cassandra_local_dir }}"
+    - "{{ cassandra_run_dir }}"
+    - "{{ cassandra_work_dir }}"
+    - "{{ cassandra_init_dir }}"
+    - "{{ cassandra_log_dir }}"
+
+- name: FND-CDB | install | touch logfiles
+  become: true
+  file:
+    path: "{{ item }}"
+    state: touch
+    owner: "{{ cassandra_user }}"
+    group: adm
+    mode: 0640
+  with_items:
+    - "{{ cassandra_log_file }}"
+    - "{{ cassandra_log_file }}"
