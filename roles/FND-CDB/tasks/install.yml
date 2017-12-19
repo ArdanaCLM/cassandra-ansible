@@ -26,13 +26,21 @@
 #     - cassandra
 #   url: "https://download.opensuse.org/repositories/home:/sgrasley:/branches:/server:/database/SLE_12_SP3/"
 
-- name: FND-CDB | install | Add cassandra repo
+- name: FND-CDB | install | Add cassandra Zypper repo
   zypper_repository:
     name: server-database-cassandra
     repo: 'https://download.opensuse.org/repositories/server:/database/SLE_12_SP3/'
     disable_gpg_check: yes
     state: present
   become: yes
+  when: ansible_os_family == "Suse"
+
+- name: FND-CDB | install | Add cassandra Debian repo
+  apt_repository:
+    repo: 'deb http://www.apache.org/dist/cassandra/debian 311x main'
+    state: present
+  become: yes
+  when: ansible_os_family == "Debian"
 
 - name: FND-CDB | install | Setup group
   become_user: root
@@ -58,6 +66,16 @@
   package:
     name: cassandra
     state: present
+  when: ansible_os_family == "Suse"
+
+- name: FND-CDB | install | install Debian cassandra
+  become: yes
+  apt:
+    name: cassandra
+    state: present
+    force: yes
+  become: yes
+  when: ansible_os_family == "Debian"
 
 - name: FND-CDB | install | create cassandra log and local directories
   become: yes
