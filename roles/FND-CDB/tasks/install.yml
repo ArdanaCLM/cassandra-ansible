@@ -15,33 +15,6 @@
 #
 ---
 
-#
-# TODO(ashwin):
-# 1.) fix download.opensuse.org link below once cassandra 3.11.0 package gets accepted
-# 2.) move add repo code to hp/hlm-dev-toools/ansible/roles/vagrant-vm/defaults/main.yml
-#
-# - repo: cloud-openstack-newton-cassandra
-#   disable_gpg_check: yes
-#   pkgs:
-#     - cassandra
-#   url: "https://download.opensuse.org/repositories/home:/sgrasley:/branches:/server:/database/SLE_12_SP3/"
-
-- name: FND-CDB | install | Add cassandra Zypper repo
-  zypper_repository:
-    name: server-database-cassandra
-    repo: 'https://download.opensuse.org/repositories/server:/database/SLE_12_SP3/'
-    disable_gpg_check: yes
-    state: present
-  become: yes
-  when: ansible_os_family == "Suse"
-
-- name: FND-CDB | install | Add cassandra Debian repo
-  apt_repository:
-    repo: 'deb http://www.apache.org/dist/cassandra/debian 311x main'
-    state: present
-  become: yes
-  when: ansible_os_family == "Debian"
-
 - name: FND-CDB | install | Setup group
   become_user: root
   become: True
@@ -76,6 +49,12 @@
     force: yes
   become: yes
   when: ansible_os_family == "Debian"
+
+- name: FND-CDB | install | install cassandra tools
+  become: yes
+  package:
+    name: cassandra-tools
+    state: present
 
 - name: FND-CDB | install | create cassandra log and local directories
   become: yes

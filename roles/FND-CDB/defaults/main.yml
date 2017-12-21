@@ -44,7 +44,7 @@ cassandra_user: cassandra
 # cassandra configuration properties
 cassandra_hints_dir: "{{ cassandra_home_dir }}/data/hints"
 cassandra_data_file_dirs: "{{ cassandra_home_dir }}/data/data" #TODO(ashwin) should be a list
-cassandra_commit_file_directory: "{{ cassandra_home_dir }}/data/commitlog"
+cassandra_commit_file_directory: "{{ cassandra_home_dir }}/commitlog"
 cassandra_saved_caches_directory: "{{ cassandra_home_dir }}/data/saved_caches"
 cassandra_seeds: "{% for node in FND_CDB.members.inter_node_cluster %}{{ node.host }}{% if not loop.last %},{% endif %}{% endfor %}"
 cassandra_concurrent_reads: 128
