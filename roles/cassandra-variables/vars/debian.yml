@@ -13,15 +13,23 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 #
-
 ---
+zookeeper_post_upgrade_cleanup:
+  - openjdk-7-jre-headless
 
-- hosts: FND-CDB
-  vars_files:
-    - roles/cassandra-variables/vars/configuration.yml
-    - roles/cassandra-variables/defaults/main.yml
-    - roles/cassandra-variables/vars/{{ ansible_os_family | lower }}.yml
-  roles:
-  - FND-CDB
-  tasks:
-  - include: roles/FND-CDB/tasks/configure.yml
+monasca_post_upgrade_cleanup:
+  - openjdk-7-jre-headless
+
+monasca_pre_upgrade_pkg_lock:
+  - influxdb
+  - vertica
+
+vertica_version: 7.2.1-0
+vertica_jdbc_version: 7.2.1-0
+
+vertica_jdbc_jar: "vertica-jdbc-{{ vertica_jdbc_version }}.jar"
+vertica_jdbc_location: "/opt/vertica/java/lib/{{ vertica_jdbc_jar }}"
+
+# just adding for consistency, not needed for debian side.
+cacert_symlink_source_location:
+cacert_symlink_target_location:

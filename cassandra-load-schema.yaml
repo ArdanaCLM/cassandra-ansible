@@ -1,7 +1,0 @@
-- hosts: localhost
-  gather_facts: False
-  tasks:
-    - name: load monasca schema
-      become: true
-      shell: /usr/bin/cqlsh -f /home/stack/git/monasca-api/devstack/files/cassandra/monasca_schema.cql 10.84.43.177
-

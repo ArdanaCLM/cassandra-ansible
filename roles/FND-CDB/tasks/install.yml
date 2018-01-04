@@ -64,8 +64,9 @@
     owner: "{{ cassandra_user }}"
     group: "{{ cassandra_group }}"
     mode: 0775
+    recurse: yes
   with_items:
-    - "{{ cassandra_local_dir }}"
+    - "{{ cassandra_home_dir }}"
     - "{{ cassandra_run_dir }}"
     - "{{ cassandra_work_dir }}"
     - "{{ cassandra_init_dir }}"

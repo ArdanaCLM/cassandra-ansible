@@ -30,7 +30,6 @@ cassandra_ver: 3.11
 cassandra_root_dir: "{{ cassandra_component_name | bin_dir() }}/.."
 cassandra_venv_lib_dir: "{{ cassandra_component_name | jar_dir() }}"
 
-cassandra_local_dir: /var/cassandra
 cassandra_home_dir: /var/cassandra
 cassandra_run_dir: /var/run/cassandra
 cassandra_work_directory: "{{ cassandra_run_dir }}/work"
