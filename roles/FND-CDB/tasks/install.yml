@@ -68,18 +68,5 @@
   with_items:
     - "{{ cassandra_home_dir }}"
     - "{{ cassandra_run_dir }}"
-    - "{{ cassandra_work_dir }}"
     - "{{ cassandra_init_dir }}"
     - "{{ cassandra_log_dir }}"
-
-- name: FND-CDB | install | touch logfiles
-  become: true
-  file:
-    path: "{{ item }}"
-    state: touch
-    owner: "{{ cassandra_user }}"
-    group: adm
-    mode: 0640
-  with_items:
-    - "{{ cassandra_log_file }}"
-    - "{{ cassandra_log_file }}"

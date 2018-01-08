@@ -79,10 +79,5 @@ cassandra_worker_systemd_service: /etc/systemd/system/cassandra-worker.service
 # monitoring
 cassandra_agent_detection_plugin_dir: "{{ monasca_agent_detection_plugin_dir }}"
 
-# log dir
-cassandra_log_dir: /var/log/cassandra/
-
-# TODO(ashwin): legacy, remove?
-cassandra_dummy: "dummy value"
 run_mode: Deploy
 skip_install: False
