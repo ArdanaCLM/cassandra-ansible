@@ -18,4 +18,4 @@
 - name: FND-CDB | stop | stop cassandra
   service: name=cassandra state=stopped
   become: yes
-
+  when: ansible_os_family == "Suse"

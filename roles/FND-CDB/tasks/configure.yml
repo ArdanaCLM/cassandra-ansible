@@ -18,14 +18,17 @@
 - include: _write_conf.yml
   src: "../templates/cassandra.yaml.j2"
   dest: "{{ cassandra_conf_dir }}/cassandra.yaml"
+  when: ansible_os_family == "Suse"
 
 - include: _write_conf.yml
   src: "../templates/jvm.options.j2"
   dest: "{{ cassandra_conf_dir }}/jvm.options"
+  when: ansible_os_family == "Suse"
 
 - include: _write_conf.yml
   src: "../templates/cassandra-rackdc.properties.j2"
   dest: "{{ cassandra_conf_dir }}/cassandra-rackdc.properties"
+  when: ansible_os_family == "Suse"
 
 # TODO(ashwin): figure out how to do this
 # - name: FND-CDB | configure | Register cassandra restart
@@ -46,6 +49,7 @@
     - gc.log.0.current
     - system.log
     - cassandra.log
+  when: ansible_os_family == "Suse"
 
 - name: FND-CDB | configure | set cassandra log file ownership
   become: yes
@@ -60,3 +64,5 @@
     - gc.log.0.current
     - system.log
     - cassandra.log
+  when: ansible_os_family == "Suse"
+

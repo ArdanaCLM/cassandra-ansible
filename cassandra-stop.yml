@@ -20,3 +20,5 @@
   - FND-CDB
   tasks:
   - include: roles/FND-CDB/tasks/stop.yml
+    when: ansible_os_family == "Suse"
+

@@ -18,6 +18,7 @@
   debug:
     msg: "Running service check for cassandra"
   run_once: true
+  when: ansible_os_family == "Suse"
 
 - name: FND-CDB | status | Check systemd service running cassandra
   command: systemctl status cassandra
@@ -32,4 +33,5 @@
       systemctl status cassandra output:
       {{ cassandra_systemctl_status_result.stdout }}
       {{ cassandra_systemctl_status_result.stderr }}
-  when: cassandra_systemctl_status_result | failed
+  when: ansible_os_family == "Suse" and cassandra_systemctl_status_result | failed
+

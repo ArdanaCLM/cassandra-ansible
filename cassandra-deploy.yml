@@ -16,7 +16,17 @@
 ---
 
 - include: _cassandra-install.yml
+  when: ansible_os_family == "Suse"
+
 - include: _cassandra-configure.yml
+  when: ansible_os_family == "Suse"
+
 - include: cassandra-stop.yml
+  when: ansible_os_family == "Suse"
+
 - include: cassandra-start.yml
+  when: ansible_os_family == "Suse"
+
 # - include: _cassandra-populate.yml
+# when: ansible_os_family == "Suse"
+

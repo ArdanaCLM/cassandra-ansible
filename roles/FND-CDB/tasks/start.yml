@@ -20,3 +20,5 @@
 - name: FND-CDB | start | wait for cassandra to complete startup
   pause:
      seconds: 30
+  when: ansible_os_family == "Suse"
+
