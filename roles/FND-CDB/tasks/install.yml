@@ -31,18 +31,20 @@
     group: "{{ cassandra_group }}"
   when: ansible_os_family == "Suse"
 
-- name: FND-CDB | install | Update installed packager cache
+- name: FND-CDB | install | install cassandra (SUSE)
   become: yes
-  install_package:
-    cache: update
-  when: ansible_os_family == "Suse"
-
-- name: FND-CDB | install | install cassandra
-  become: yes
-  package:
+  zypper:
     name: cassandra
     state: present
   when: ansible_os_family == "Suse"
+
+- name: FND-CDB | install | install cassandra (Debian)
+  become: yes
+  apt:
+    name: cassandra
+    state: present
+    force: yes
+  when: ansible_os_family == "Debian"
 
 - name: FND-CDB | install | install cassandra tools
   become: yes
