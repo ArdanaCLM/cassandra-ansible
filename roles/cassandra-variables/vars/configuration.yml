@@ -1,6 +1,6 @@
 #
 # (c) Copyright 2016 Hewlett Packard Enterprise Development LP
-# (c) Copyright 2017 SUSE LLC
+# (c) Copyright 2017-2018 SUSE LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may
 # not use this file except in compliance with the License. You may obtain
@@ -26,7 +26,7 @@ cassandra_tuning_selector_override:
 # parameters below in order to set individual parameters if required
 cassandra_possible_tunings:
     demo:
-        maxmemorysize: 1G
+        maxmemorysize: 256M
     small:
         maxmemorysize: 2G
     medium:
