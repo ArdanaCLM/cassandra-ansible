@@ -40,9 +40,18 @@ cassandra_log_dir: /var/log/cassandra
 cassandra_group: cassandra
 cassandra_user: cassandra
 
+cassandra_admin_user: "{{ FND_CDB.vars.cassandra_admin_user }}"
+cassandra_admin_password: "{{ FND_CDB.vars.cassandra_admin_password }}"
+cassandra_old_admin_password: >
+  "{% if FND_CDB.old_vars is defined and FND_CDB.old_vars.cassandra_admin_password is defined %}{{ FND_CDB.old_vars.cassandra_admin_password }}{% else %}cassandra{% endif %}"
+cassandra_old_admin_user: >
+  "{% if FND_CDB.old_vars is defined and FND_CDB.old_vars.cassandra_admin_user is defined %}{{ FND_CDB.old_vars.cassandra_admin_user }}{% else %}{{ cassandra_admin_user }}{% endif %}"
+
+cassandra_datacenter_identifier: "{{ FND_CDB.vars.cassandra_datacenter_identifier }}"
+
 # cassandra configuration properties
 cassandra_hints_dir: "{{ cassandra_home_dir }}/data/hints"
-cassandra_data_file_dirs: "{{ cassandra_home_dir }}/data/data" #TODO(ashwin) should be a list
+cassandra_data_file_dirs: "{{ cassandra_home_dir }}/data/data"
 cassandra_commit_file_directory: "{{ cassandra_home_dir }}/commitlog"
 cassandra_saved_caches_directory: "{{ cassandra_home_dir }}/data/saved_caches"
 cassandra_seeds: "{% for node in FND_CDB.members.inter_node_cluster %}{{ node.host }}{% if not loop.last %},{% endif %}{% endfor %}"
@@ -61,10 +70,6 @@ cassandra_sstable_preemptive_open_interval_in_mb: 100
 cassandra_endpoint_snitch: GossipingPropertyFileSnitch
 cassandra_batch_size_warn_threshold_in_kb: 15
 cassandra_contact_points: "{% for node in FND_CDB.members.inter_node_cluster %}- {{ node.host }}{% if not loop.last %},{% endif %}{% endfor %}"
-
-
-# TODO(ashwin): just a test remove
-cassandra_port: "{{ host.bind.FND_CDB.inter_node_cluster.port }}"
 
 cassandra_init: systemd
 

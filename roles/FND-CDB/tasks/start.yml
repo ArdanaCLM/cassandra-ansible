@@ -14,9 +14,20 @@
 # under the License.
 #
 ---
+
+- name: FND-CDB | start | restart cassandra
+  service: name=cassandra state=restarted
+  when: >
+    ( hostvars[groups['FND-CDB--first-member'] | first]['cassandra_pwd_changed'] is defined and
+      hostvars[groups['FND-CDB--first-member'] | first]['cassandra_pwd_changed'].changed ) or
+    ( hostvars[groups['FND-CDB--first-member'] | first]['cassandra_conf_changed'] is defined and
+      hostvars[groups['FND-CDB--first-member'] | first]['cassandra_conf_changed'].changed )
+  register: ardana_notify_tsdb_restarted
+
 - name: FND-CDB | start | start cassandra
   service: name=cassandra state=started
   become: yes
+
 - name: FND-CDB | start | wait for cassandra to complete startup
   pause:
      seconds: 30

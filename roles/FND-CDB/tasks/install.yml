@@ -31,28 +31,6 @@
     group: "{{ cassandra_group }}"
   when: ansible_os_family == "Suse"
 
-- name: FND-CDB | install | install cassandra (SUSE)
-  become: yes
-  zypper:
-    name: cassandra
-    state: present
-  when: ansible_os_family == "Suse"
-
-- name: FND-CDB | install | install cassandra (Debian)
-  become: yes
-  apt:
-    name: cassandra
-    state: present
-    force: yes
-  when: ansible_os_family == "Debian"
-
-- name: FND-CDB | install | install cassandra tools
-  become: yes
-  package:
-    name: cassandra-tools
-    state: present
-  when: ansible_os_family == "Suse"
-
 - name: FND-CDB | install | create cassandra log and local directories
   become: yes
   file:
@@ -68,3 +46,18 @@
     - "{{ cassandra_init_dir }}"
     - "{{ cassandra_log_dir }}"
   when: ansible_os_family == "Suse"
+
+- name: FND-CDB | install | install cassandra (SUSE)
+  become: yes
+  zypper:
+    name: cassandra
+    state: present
+  when: ansible_os_family == "Suse"
+
+- name: FND-CDB | install | install cassandra tools
+  become: yes
+  package:
+    name: cassandra-tools
+    state: present
+  when: ansible_os_family == "Suse"
+

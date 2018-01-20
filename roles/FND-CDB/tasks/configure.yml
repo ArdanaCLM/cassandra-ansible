@@ -1,5 +1,5 @@
 #
-# (c) Copyright 2017 SUSE LLC
+# (c) Copyright 2017-2018 SUSE LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may
 # not use this file except in compliance with the License. You may obtain
@@ -18,23 +18,26 @@
 - include: _write_conf.yml
   src: "../templates/cassandra.yaml.j2"
   dest: "{{ cassandra_conf_dir }}/cassandra.yaml"
+  file_mode: "u=rwx,g=,o="
+  set_fact:
+    cassandra_conf_changed: write_conf_result | changed
   when: ansible_os_family == "Suse"
 
 - include: _write_conf.yml
   src: "../templates/jvm.options.j2"
   dest: "{{ cassandra_conf_dir }}/jvm.options"
+  file_mode: "u=rwx,g=rx,o="
+  set_fact:
+    cassandra_conf_changed: cassandra_conf_changed or (write_conf_result | changed)
   when: ansible_os_family == "Suse"
 
 - include: _write_conf.yml
   src: "../templates/cassandra-rackdc.properties.j2"
   dest: "{{ cassandra_conf_dir }}/cassandra-rackdc.properties"
+  file_mode: "u=rwx,g=,o="
+  set_fact:
+    cassandra_conf_changed: cassandra_conf_changed or (write_conf_result | changed)
   when: ansible_os_family == "Suse"
-
-# TODO(ashwin): figure out how to do this
-# - name: FND-CDB | configure | Register cassandra restart
-#   command: /bin/true
-#   register: hlm_notify_cassandra_restart_required
-#   when: hlm_notify_cassandra_restart_required.changed
 
 - name: FND-CDB | configure | configure cassandra log file ownership
   become: yes
@@ -44,21 +47,6 @@
     group: "{{ cassandra_group }}"
     mode: 0640
     state: touch
-  with_items:
-    - debug.log
-    - gc.log.0.current
-    - system.log
-    - cassandra.log
-  when: ansible_os_family == "Suse"
-
-- name: FND-CDB | configure | set cassandra log file ownership
-  become: yes
-  file:
-    path: "{{ cassandra_log_dir }}/{{ item }}"
-    state: touch
-    owner: "{{ cassandra_user }}"
-    group: "adm"
-    mode: 0640
   with_items:
     - debug.log
     - gc.log.0.current

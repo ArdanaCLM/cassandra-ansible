@@ -1,5 +1,5 @@
 #
-# (c) Copyright 2017 SUSE LLC
+# (c) Copyright 2018 SUSE LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may
 # not use this file except in compliance with the License. You may obtain
@@ -13,16 +13,24 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 #
-
 ---
 
-- hosts: FND-CDB
-  vars_files:
-    - roles/cassandra-variables/vars/configuration.yml
-    - roles/cassandra-variables/defaults/main.yml
-    - roles/cassandra-variables/vars/{{ ansible_os_family | lower }}.yml
-  roles:
-  - FND-CDB
-  tasks:
-  - include: roles/FND-CDB/tasks/configure.yml
+- include: cassandra-status.yml
+
+- include: cassandra-stop.yml
+
+- include: _cassandra-install.yml
+  when: ansible_os_family == "Suse"
+
+- include: _cassandra-configure.yml
+  when: ansible_os_family == "Suse"
+
+- include: cassandra-start.yml
+
+- include: _cassandra-configure-password.yml
+  when: ansible_os_family == "Suse"
+
+- include: cassandra-start.yml
+
+- include: cassandra-status.yml
 

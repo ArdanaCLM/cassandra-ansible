@@ -36,7 +36,7 @@
     dest: "{{ dest }}"
     owner: "{{ cassandra_user }}"
     group: "{{ cassandra_group }}"
-    mode: 0600
+    mode: "{{ file_mode }}"
   register: write_conf_result
 
 - name: FND-CDB | _write_conf | Delete backup file that has not changed
