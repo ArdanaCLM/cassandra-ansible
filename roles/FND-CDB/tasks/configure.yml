@@ -26,7 +26,7 @@
 - include: _write_conf.yml
   src: "../templates/jvm.options.j2"
   dest: "{{ cassandra_conf_dir }}/jvm.options"
-  file_mode: "u=rwx,g=rx,o="
+  file_mode: "u=rwx,g=rx,o=r"
   set_fact:
     cassandra_conf_changed: cassandra_conf_changed or (write_conf_result | changed)
   when: ansible_os_family == "Suse"

@@ -31,19 +31,31 @@
     group: "{{ cassandra_group }}"
   when: ansible_os_family == "Suse"
 
-- name: FND-CDB | install | create cassandra log and local directories
+- name: FND-CDB | install | create cassandra directories
   become: yes
   file:
     path: "{{ item }}"
     state: directory
     owner: "{{ cassandra_user }}"
     group: "{{ cassandra_group }}"
-    mode: 0775
+    mode: 0740
     recurse: yes
   with_items:
-    - "{{ cassandra_home_dir }}"
-    - "{{ cassandra_run_dir }}"
-    - "{{ cassandra_init_dir }}"
+    - "{{ FND_CDB.vars.cassandra_data_dir }}"
+    - "{{ cassandra_data_dir }}"
+    - "{{ cassandra_commit_log_dir }}"
+  when: ansible_os_family == "Suse"
+
+- name: FND-CDB | install | create cassandra log directory
+  become: yes
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ cassandra_user }}"
+    group: "{{ cassandra_group }}"
+    mode: 0664
+    recurse: yes
+  with_items:
     - "{{ cassandra_log_dir }}"
   when: ansible_os_family == "Suse"
 

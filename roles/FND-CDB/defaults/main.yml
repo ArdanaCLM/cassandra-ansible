@@ -1,5 +1,5 @@
 #
-# (c) Copyright 2017 SUSE LLC
+# (c) Copyright 2017-2018 SUSE LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may
 # not use this file except in compliance with the License. You may obtain
@@ -30,11 +30,7 @@ cassandra_ver: 3.11
 cassandra_root_dir: "{{ cassandra_component_name | bin_dir() }}/.."
 cassandra_venv_lib_dir: "{{ cassandra_component_name | jar_dir() }}"
 
-cassandra_home_dir: /var/cassandra
-cassandra_run_dir: /var/run/cassandra
-cassandra_work_directory: "{{ cassandra_run_dir }}/work"
 cassandra_conf_dir: "{{ '/etc/cassandra/conf' if ansible_os_family == 'Suse' else '/etc/cassandra' }}"
-cassandra_init_dir: /etc/cassandra/init
 cassandra_log_dir: /var/log/cassandra
 
 cassandra_group: cassandra
@@ -50,39 +46,28 @@ cassandra_old_admin_user: >
 cassandra_datacenter_identifier: "{{ FND_CDB.vars.cassandra_datacenter_identifier }}"
 
 # cassandra configuration properties
-cassandra_hints_dir: "{{ cassandra_home_dir }}/data/hints"
-cassandra_data_file_dirs: "{{ cassandra_home_dir }}/data/data"
-cassandra_commit_file_directory: "{{ cassandra_home_dir }}/commitlog"
-cassandra_saved_caches_directory: "{{ cassandra_home_dir }}/data/saved_caches"
+cassandra_hints_dir: "{{ FND_CDB.vars.cassandra_data_dir }}/hints"
+cassandra_data_dir: "{{ FND_CDB.vars.cassandra_data_dir }}/data"
+cassandra_commit_log_dir: "{{ FND_CDB.vars.cassandra_commit_log_dir }}"
+cassandra_saved_caches_dir: "{{ FND_CDB.vars.cassandra_data_dir }}/saved_caches"
 cassandra_seeds: "{% for node in FND_CDB.members.inter_node_cluster %}{{ node.host }}{% if not loop.last %},{% endif %}{% endfor %}"
 cassandra_concurrent_reads: 128
-cassandra_concurrent_writes: 128
+cassandra_concurrent_writes: 512
 cassandra_concurrent_counter_writes: 128
 cassandra_concurrent_materialized_view_writes: 128
 cassandra_memtable_cleanup_threshold: 0.15
 cassandra_memtable_allocation_type: "offheap_objects"
-cassandra_memtable_flush_writers: 6
-cassandra_index_summary_capacity_in_mb: 6
+cassandra_memtable_flush_writers: 3
 cassandra_listen_on_broadcast_address: true
 cassandra_concurrent_compactors: 4
-cassandra_compaction_throughput_mb_per_sec: 100
+cassandra_compaction_throughput_mb_per_sec: 2048
 cassandra_sstable_preemptive_open_interval_in_mb: 100
 cassandra_endpoint_snitch: GossipingPropertyFileSnitch
-cassandra_batch_size_warn_threshold_in_kb: 15
+cassandra_batch_size_warn_threshold_in_kb: 2000
+cassandra_batch_size_fail_threshold_in_kb: 2500
+cassandra_unlogged_batch_warn_threshold: 500
 cassandra_contact_points: "{% for node in FND_CDB.members.inter_node_cluster %}- {{ node.host }}{% if not loop.last %},{% endif %}{% endfor %}"
 
 cassandra_init: systemd
 
-# upstart
-cassandra_master_upstart_conf: /etc/init/cassandra-master.conf
-cassandra_worker_upstart_conf: /etc/init/cassandra-worker.conf
-
-# systemd
-cassandra_master_systemd_service: /etc/systemd/system/cassandra-master.service
-cassandra_worker_systemd_service: /etc/systemd/system/cassandra-worker.service
-
-# monitoring
-cassandra_agent_detection_plugin_dir: "{{ monasca_agent_detection_plugin_dir }}"
-
-run_mode: Deploy
 skip_install: False
