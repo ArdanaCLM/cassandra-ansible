@@ -33,8 +33,8 @@ cassandra_venv_lib_dir: "{{ cassandra_component_name | jar_dir() }}"
 cassandra_conf_dir: "{{ '/etc/cassandra/conf' if ansible_os_family == 'Suse' else '/etc/cassandra' }}"
 cassandra_log_dir: /var/log/cassandra
 
-cassandra_group: cassandra
-cassandra_user: cassandra
+cassandra_group: "{{ FND_CDB.vars.cassandra_group }}"
+cassandra_user: "{{ FND_CDB.vars.cassandra_user }}"
 
 cassandra_admin_user: "{{ FND_CDB.vars.cassandra_admin_user }}"
 cassandra_admin_password: "{{ FND_CDB.vars.cassandra_admin_password }}"
