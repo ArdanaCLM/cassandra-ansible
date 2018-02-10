@@ -15,21 +15,14 @@
 #
 ---
 
-- name: FND-CDB | install | Setup group
-  become_user: root
-  become: True
-  group:
-    name: "{{ cassandra_group }}"
-    system: yes
-  when: ansible_os_family == "Suse"
-
-- name: FND-CDB | install | Setup user
+- name: FND-CDB | install | install cassandra
   become: yes
-  user:
-    name: "{{ cassandra_user }}"
-    system: yes
-    group: "{{ cassandra_group }}"
-  when: ansible_os_family == "Suse"
+  package:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - cassandra
+    - cassandra-tools
 
 - name: FND-CDB | install | create cassandra directories
   become: yes
@@ -58,18 +51,3 @@
   with_items:
     - "{{ cassandra_log_dir }}"
   when: ansible_os_family == "Suse"
-
-- name: FND-CDB | install | install cassandra (SUSE)
-  become: yes
-  zypper:
-    name: cassandra
-    state: present
-  when: ansible_os_family == "Suse"
-
-- name: FND-CDB | install | install cassandra tools
-  become: yes
-  package:
-    name: cassandra-tools
-    state: present
-  when: ansible_os_family == "Suse"
-
