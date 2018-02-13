@@ -39,12 +39,20 @@
     cassandra_conf_changed: cassandra_conf_changed or (write_conf_result | changed)
   when: ansible_os_family == "Suse"
 
+- include: _write_conf.yml
+  src: "../templates/logback.xml.j2"
+  dest: "{{ cassandra_conf_dir }}/logback.xml"
+  file_mode: "u=rwx,g=,o="
+  set_fact:
+    cassandra_conf_changed: cassandra_conf_changed or (write_conf_result | changed)
+  when: ansible_os_family == "Suse"
+
 - name: FND-CDB | configure | configure cassandra log file ownership
   become: yes
   file:
     path: "{{ cassandra_log_dir }}/{{ item }}"
     owner: "{{ cassandra_user }}"
-    group: "{{ cassandra_group }}"
+    group: adm
     mode: 0640
     state: touch
   with_items:

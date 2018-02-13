@@ -52,8 +52,8 @@
     path: "{{ item }}"
     state: directory
     owner: "{{ cassandra_user }}"
-    group: "{{ cassandra_group }}"
-    mode: 0664
+    group: adm
+    mode: 0640
     recurse: yes
   with_items:
     - "{{ cassandra_log_dir }}"

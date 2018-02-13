@@ -1,6 +1,6 @@
 #
 # (c) Copyright 2016-2017 Hewlett Packard Enterprise Development LP
-# (c) Copyright 2017 SUSE LLC
+# (c) Copyright 2017-2018 SUSE LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may
 # not use this file except in compliance with the License. You may obtain
@@ -22,4 +22,4 @@ symlinks:
   "cassandra/cassandra.yaml.j2": "roles/FND-CDB/templates/cassandra.yaml.j2"
   "cassandra/jvm.options.j2": "roles/FND-CDB/templates/jvm.options.j2"
   "cassandra/cassandra-rackdc.properties.j2": "roles/FND-CDB/templates/cassandra-rackdc.properties.j2"
-
+  "cassandra/logback.xml.j2": "roles/FND-CDB/templates/logback.xml.j2"
