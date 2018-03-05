@@ -31,7 +31,7 @@
     state: directory
     owner: "{{ cassandra_user }}"
     group: "{{ cassandra_group }}"
-    mode: 0740
+    mode: 0750
     recurse: yes
   with_items:
     - "{{ FND_CDB.vars.cassandra_data_dir }}"
@@ -46,7 +46,7 @@
     state: directory
     owner: "{{ cassandra_user }}"
     group: adm
-    mode: 0640
+    mode: 0750
     recurse: yes
   with_items:
     - "{{ cassandra_log_dir }}"
