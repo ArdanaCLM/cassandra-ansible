@@ -29,7 +29,13 @@
   become: yes
 
 - name: FND-CDB | start | wait for cassandra to complete startup
-  pause:
-     seconds: 60
+  wait_for:
+    host="{{ cassandra_local_hostname }}"
+    port="9042"
+    state=started
+    timeout=300
   when: ansible_os_family == "Suse"
 
+- name: FND-CDB | wait for super | pause for superuser availablity
+  pause:
+    seconds: 10
