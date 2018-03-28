@@ -37,7 +37,7 @@ for d in $SNAPSHOT_DIR_LIST
           --os-user-domain-name=Default\
           --auth-version=3\
           --os-endpoint-type=internalURL\
-          --os-cacert=/etc/ssl/certs/ca-certificates.crt\
+          --os-cacert={{ trusted_ca_bundle }}\
           --os-identity-api-version=3\
           upload $HOST_NAME$SNAPSHOT_NAME $d
     set -x

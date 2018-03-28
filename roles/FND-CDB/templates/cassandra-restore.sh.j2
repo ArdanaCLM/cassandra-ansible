@@ -39,7 +39,7 @@ swift --os-auth-url={{ FRE_AGN.consumes_KEY_API.vips.private[0].url }}/v3\
       --os-user-domain-name=Default\
       --auth-version=3\
       --os-endpoint-type=internalURL\
-      --os-cacert=/etc/ssl/certs/ca-certificates.crt\
+      --os-cacert={{ trusted_ca_bundle }}\
       --os-identity-api-version=3\
       download --output-dir "/" $CONTAINER_NAME
 set -x
