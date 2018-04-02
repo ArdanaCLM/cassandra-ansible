@@ -23,5 +23,15 @@
 
 - include: cassandra-start.yml
 
+- hosts: FND-CDB
+  roles:
+  - FND-CDB
+  tasks:
+  - name: Enable cassandra service
+    become: yes
+    service:
+      name: cassandra
+      enabled: yes
+
 - include: _cassandra-configure-password.yml
   when: ansible_os_family == "Suse"
