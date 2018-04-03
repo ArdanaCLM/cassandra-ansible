@@ -16,8 +16,11 @@
 ---
 
 - name: FND-CDB | start | restart cassandra
+  become: yes
   service: name=cassandra state=restarted
   when: >
+    ( ardana_notify_cassandra_restart_required is defined and
+      ardana_notify_cassandra_restart_required.changed ) or
     ( hostvars[groups['FND-CDB--first-member'] | first]['cassandra_pwd_changed'] is defined and
       hostvars[groups['FND-CDB--first-member'] | first]['cassandra_pwd_changed'].changed ) or
     ( hostvars[groups['FND-CDB--first-member'] | first]['cassandra_conf_changed'] is defined and
