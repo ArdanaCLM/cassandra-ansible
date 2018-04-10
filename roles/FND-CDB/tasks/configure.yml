@@ -57,9 +57,8 @@
     state: touch
   with_items:
     - debug.log
-    - gc.log.0.current
+    - gc.log
     - system.log
-    - cassandra.log
   when: ansible_os_family == "Suse"
 
 - name: FND-CDB | configure | push cassandra-backup.sh
