@@ -30,9 +30,9 @@ appender reference in the root level section below.
 
   <!-- No shutdown hook; we run it ourselves in StorageService after shutdown -->
 
-  <!-- SYSTEMLOG rolling file appender to system.log (INFO level) -->
+  <!-- SYSTEMLOG file appender to system.log (INFO level) -->
 
-  <appender name="SYSTEMLOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+  <appender name="SYSTEMLOG" class="ch.qos.logback.core.FileAppender">
     <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
       <level>INFO</level>
     </filter>
@@ -42,9 +42,9 @@ appender reference in the root level section below.
     </encoder>
   </appender>
 
-  <!-- DEBUGLOG rolling file appender to debug.log (all levels) -->
+  <!-- DEBUGLOG file appender to debug.log (all levels) -->
 
-  <appender name="DEBUGLOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+  <appender name="DEBUGLOG" class="ch.qos.logback.core.FileAppender">
     <file>${cassandra.logdir}/debug.log</file>
     <encoder>
       <pattern>%-5level [%thread] %date{ISO8601} %F:%L - %msg%n</pattern>
