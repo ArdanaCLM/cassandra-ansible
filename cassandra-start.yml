@@ -18,7 +18,18 @@
 - hosts: FND-CDB
   roles:
   - FND-CDB
+  - iptables
+
   tasks:
-  - include: roles/FND-CDB/tasks/start.yml
+  - name: create the cassandra binding address list to block
+    set_fact:
+      cassandra_bind_addresses: "{% for item in ansible_all_ipv4_addresses %}{'ip': '{{item}}', 'port': 7199,},{% endfor %}"
+
+  - include: roles/iptables/tasks/iptables-add.yml
+    vars:
+      iptables_chain: "cassandra_iptables_chain"
+      iptables_ip_port: "{{ cassandra_bind_addresses }}"
     when: ansible_os_family == "Suse"
 
+  - include: roles/FND-CDB/tasks/start.yml
+    when: ansible_os_family == "Suse"
