@@ -20,5 +20,7 @@
   - FND-CDB
   tasks:
   - include: roles/FND-CDB/tasks/backup.yml
-    when: ansible_os_family == "Suse"
+    when:
+      - ansible_os_family == "Suse"
+      - FRE_AGN is defined
 

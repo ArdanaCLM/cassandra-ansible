@@ -23,4 +23,6 @@
     when: cassandra_snapshot_name is not defined
 
   - include: roles/FND-CDB/tasks/restore.yml
-    when: ansible_os_family == "Suse"
+    when:
+      - ansible_os_family == "Suse"
+      - FRE_AGN is defined
