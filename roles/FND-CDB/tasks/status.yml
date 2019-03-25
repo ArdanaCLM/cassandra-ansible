@@ -26,6 +26,12 @@
   changed_when: false
   register: cassandra_systemctl_status_result
 
+- name: FND-CDB | status | Check nodetool status of each node
+  command: nodetool status
+  ignore_errors: yes
+  changed_when: false
+  register: cassandra_nodetool_status_result
+
 - name: FND-CDB | status | Report status of cassandra
   fail:
     msg: |
