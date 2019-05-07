@@ -1,5 +1,6 @@
 [gerrit]
-host=gerrit.suse.provo.cloud
+host=gerrit.prv.suse.net
 port=29418
 project=ardana/cassandra-ansible.git
-defaultremote=gozer
+defaultremote=ardana
+defaultbranch=master
